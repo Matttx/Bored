@@ -1,0 +1,64 @@
+//
+//  APIManager.swift
+//  Bored
+//
+//  Created by Mattéo Fauchon  on 24/11/2023.
+//
+
+import Foundation
+
+let BASE_URL = "https://www.boredapi.com/api"
+
+protocol APIManagerProtocol {
+    func task<T: Codable>(url: String, method: APIManager.HTTPMethod) async throws -> T?
+}
+
+class APIManager: APIManagerProtocol {
+    
+    static var shared = APIManager()
+    
+    enum HTTPMethod: String {
+        case GET, POST
+    }
+    
+    private func handleAPIError(urlResponse: URLResponse?) throws {
+        guard let response = urlResponse as? HTTPURLResponse else {
+            throw APIError.serverError
+        }
+        
+        switch response.statusCode {
+        case 400:
+            throw APIError.badRequest
+        case 404:
+            throw APIError.notFound
+        default:
+            break
+        }
+    }
+    
+    func task<T: Codable>(url: String, method: HTTPMethod = .GET) async throws -> T {
+        
+        guard let url = URL(string: BASE_URL + url) else {
+            throw APIError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = method.rawValue
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try handleAPIError(urlResponse: response)
+        
+        var decodedData: T
+        
+        do {
+            decodedData = try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            print("Error: \(error)")
+            throw APIError.invalidData
+        }
+        
+        return decodedData
+    }
+}
+
