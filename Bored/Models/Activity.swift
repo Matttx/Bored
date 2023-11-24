@@ -85,7 +85,10 @@ class ActivityStore: ObservableObject {
     @Published var phase: Phase = .firstLoading
     @Published var error: Error?
         
-    func fetchActivity() {
+    func fetchActivity(type: String = "All", participants: String = "Whatever") {
+        selectedType = type
+        selectedParticipants = participants
+        
         guard phase != .loading else {
             return
         }

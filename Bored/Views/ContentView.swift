@@ -20,7 +20,7 @@ struct ContentView: View {
     var isFiltered: Bool {
         store.selectedType != "All" || store.selectedParticipants != "Whatever"
     }
-        
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -41,7 +41,7 @@ struct ContentView: View {
                 .presentationDetents([.fraction(0.5)])
                 .environmentObject(store)
         }
-        .animation(.bouncy(extraBounce: 0.2), value: store.phase)
+        .animation(.smooth(extraBounce: 0.6), value: store.phase)
         .padding()
     }
     
@@ -67,7 +67,21 @@ struct ContentView: View {
                         isPresentedFilters = true
                     } label: {
                         Image(systemName: isFiltered ? "list.bullet.circle.fill" : "list.bullet.circle")
-                            .contentTransition(.symbolEffect(.replace.downUp.byLayer))
+                            .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol))
+                            .keyframeAnimator(
+                                initialValue: FiltersAnimationValues(),
+                                trigger: isFiltered) { content, value in
+                                    content
+                                        .scaleEffect(value.scale)
+                                } keyframes: { value in
+                                    KeyframeTrack(\.scale) {
+                                        LinearKeyframe(1.0, duration: 0.2)
+                                        SpringKeyframe(1.3, duration: 0.3, spring: .bouncy)
+                                        SpringKeyframe(1.0, duration: 0.2, spring: .bouncy)
+                                        SpringKeyframe(1.3, duration: 0.3, spring: .bouncy)
+                                        SpringKeyframe(1.0, duration: 0.2, spring: .bouncy)
+                                    }
+                                }
                             .font(.system(size: 20))
                     }
                 }
@@ -114,7 +128,7 @@ struct ContentView: View {
                     cardContent
                 }
                 .transition(
-                    .scale(scale: 0.9)
+                    .scale(scale: 0.87)
                     .combined(with: .opacity.animation(.easeInOut(duration: 0.5)))
                 )
         }
@@ -162,6 +176,10 @@ struct ContentView: View {
             }
             .font(.callout)
         }
+    }
+    
+    private struct FiltersAnimationValues {
+        var scale = 1.0
     }
 }
 

@@ -13,6 +13,10 @@ struct FiltersSheet: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    @State private var selectedType: String = "All"
+    
+    @State private var selectedParticipants: String = "Whatever"
+    
     private let types = [
         "All",
         "Education",
@@ -35,51 +39,63 @@ struct FiltersSheet: View {
     ]
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 24) {
             Text("Filters")
                 .font(.title2)
                 .fontWeight(.semibold)
-            HStack {
-                Text("Activity type")
-                Spacer()
-                Picker("", selection: $store.selectedType) {
-                    ForEach(types, id: \.self) {
-                        Text($0)
+                .frame(maxWidth: .infinity)
+                .overlay(alignment: .trailing) {
+                    Button {
+                        selectedType = "All"
+                        selectedParticipants = "Whatever"
+                    } label: {
+                        Text("Clear")
                     }
                 }
-                .pickerStyle(.menu)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundStyle(.background)
-                        .shadow(color: .gray, radius: 1)
-                )
-            }
             
-            Divider()
-                .background(.accent)
-                .padding(.horizontal)
-            
-            HStack {
-                Text("Participants")
-                Spacer()
-                Picker("", selection: $store.selectedParticipants) {
-                    ForEach(participants, id: \.self) {
-                        Text($0)
+            VStack(spacing: 16) {
+                HStack {
+                    Text("Activity type")
+                    Spacer()
+                    Picker("", selection: $selectedType) {
+                        ForEach(types, id: \.self) {
+                            Text($0)
+                        }
                     }
+                    .pickerStyle(.menu)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundStyle(.background)
+                            .shadow(color: .gray, radius: 1)
+                    )
                 }
-                .pickerStyle(.automatic)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundStyle(.background)
-                        .shadow(color: .gray, radius: 1)
-                )
+                
+                Divider()
+                    .background(.accent)
+                    .padding(.horizontal)
+                
+                HStack {
+                    Text("Participants")
+                    Spacer()
+                    Picker("", selection: $selectedParticipants) {
+                        ForEach(participants, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.automatic)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundStyle(.background)
+                            .shadow(color: .gray, radius: 1)
+                    )
+                }
             }
             
             Spacer(minLength: 0)
             
             Button {
                 dismiss()
-                store.fetchActivity()
+                store.fetchActivity(type: selectedType, participants: selectedParticipants)
             } label: {
                 Text("Confirm")
                     .font(.headline)
@@ -87,6 +103,10 @@ struct FiltersSheet: View {
                     .frame(maxWidth: .infinity, maxHeight: 40)
             }
             .buttonStyle(.borderedProminent)
+        }
+        .onAppear {
+            selectedType = store.selectedType
+            selectedParticipants = store.selectedParticipants
         }
         .padding()
     }
