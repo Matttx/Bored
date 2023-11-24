@@ -10,7 +10,7 @@ import Foundation
 let BASE_URL = "https://www.boredapi.com/api"
 
 protocol APIManagerProtocol {
-    func task<T: Codable>(url: String, method: APIManager.HTTPMethod) async throws -> T?
+    func task<T: Codable>(url: String, method: APIManager.HTTPMethod, queries: [String: String]) async throws -> T?
 }
 
 class APIManager: APIManagerProtocol {
@@ -36,16 +36,26 @@ class APIManager: APIManagerProtocol {
         }
     }
     
-    func task<T: Codable>(url: String, method: HTTPMethod = .GET) async throws -> T {
+    func task<T: Codable>(url: String, method: HTTPMethod = .GET, queries: [String: String] = [:]) async throws -> T {
         
-        guard let url = URL(string: BASE_URL + url) else {
+        guard var components = URLComponents(string: "\(BASE_URL)\(url)") else {
+            throw APIError.invalidURL
+        }
+        
+        if !queries.isEmpty {
+            components.queryItems = queries.map { (key, value) in
+                URLQueryItem(name: key, value: value)
+            }
+        }
+        
+        guard let url = components.url else {
             throw APIError.invalidURL
         }
         
         var request = URLRequest(url: url)
         
         request.httpMethod = method.rawValue
-        
+
         let (data, response) = try await URLSession.shared.data(for: request)
         try handleAPIError(urlResponse: response)
         

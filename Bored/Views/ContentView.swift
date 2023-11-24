@@ -13,7 +13,13 @@ struct ContentView: View {
     
     let screenSize = UIScreen.main.bounds
     
-    @State private var isPresentedSheet = false
+    @State private var isPresentedSafariView = false
+    
+    @State private var isPresentedFilters = false
+    
+    var isFiltered: Bool {
+        store.selectedType != "All" || store.selectedParticipants != "Whatever"
+    }
         
     var body: some View {
         NavigationStack {
@@ -22,13 +28,18 @@ struct ContentView: View {
             }
         }
         .task {
-            await store.fetchRandom()
+            await store.fetchActivity()
         }
-        .sheet(isPresented: $isPresentedSheet) {
+        .sheet(isPresented: $isPresentedSafariView) {
             if let link = store.activity.link,
                let url = URL(string: link) {
                 SafariView(url: url)
             }
+        }
+        .sheet(isPresented: $isPresentedFilters) {
+            FiltersSheet()
+                .presentationDetents([.fraction(0.5)])
+                .environmentObject(store)
         }
         .animation(.easeInOut(duration: 2), value: store.activity.label)
         .padding()
@@ -65,15 +76,21 @@ struct ContentView: View {
                 .frame(maxWidth: screenSize.width / 1.2)
                 .overlay(alignment: .trailing) {
                     Button {
-                        
+                        isPresentedFilters = true
                     } label: {
-                        Image(systemName: "list.bullet")
+                        Image(systemName: isFiltered ? "list.bullet.circle.fill" : "list.bullet.circle")
+                            .font(.system(size: 20))
                     }
                 }
             
             Spacer()
             
-            if store.phase == .success {
+            if store.activity.label == nil && store.phase == .success {
+                Text("No activity found with theses filters")
+                    .font(.title)
+                    .bold()
+                    .multilineTextAlignment(.center)
+            } else if store.phase == .success {
                 RoundedRectangle(cornerRadius: 32)
                     .frame(width: screenSize.width / 1.2, height: screenSize.height / 2)
                     .foregroundStyle(.background)
@@ -81,7 +98,6 @@ struct ContentView: View {
                     .overlay {
                         cardContent
                     }
-                    
             } else {
                 EmptyView()
             }
@@ -90,7 +106,7 @@ struct ContentView: View {
             
             Button {
                 Task {
-                    await store.fetchRandom()
+                    await store.fetchActivity()
                 }
             } label: {
                 Text("Another activity")
@@ -110,7 +126,7 @@ struct ContentView: View {
                 .multilineTextAlignment(.center)
             if let link = store.activity.link, !link.isEmpty {
                 Button {
-                    isPresentedSheet = true
+                    isPresentedSafariView = true
                 } label: {
                     Text("Know more")
                         .font(.footnote)

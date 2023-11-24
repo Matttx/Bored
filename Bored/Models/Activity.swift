@@ -45,13 +45,24 @@ struct Activity: Codable {
         case key
     }
     
-    static func fetchRandom() async throws -> Activity {
+    static func fetchActivity(type: String, participants: String) async throws -> Activity {
+        
+        var queries: [String: String] = [:]
+        
+        if type != "All" {
+            queries["type"] = type.lowercased()
+        }
+        
+        if participants != "Whatever" {
+            queries["participants"] = participants
+        }
+        
         do {
-            let data: Activity = try await APIManager.shared.task(url: "/activity/")
+            let data: Activity = try await APIManager.shared.task(url: "/activity", queries: queries)
             
             return data
         } catch {
-            print("Error fetchRandom: \(error)")
+            print("Error fetchActivity: \(error)")
             throw error
         }
     }
@@ -63,6 +74,10 @@ struct Activity: Codable {
 class ActivityStore: ObservableObject {
     @Published var activity: Activity = .init()
     
+    @Published var selectedType: String = "All"
+    
+    @Published var selectedParticipants: String = "Whatever"
+    
     enum Phase {
         case firstLoading, loading, success, failure
     }
@@ -70,10 +85,10 @@ class ActivityStore: ObservableObject {
     @Published var phase: Phase = .firstLoading
     @Published var error: Error?
     
-    func fetchRandom() async {
+    func fetchActivity() async {
         do {
             phase = .loading
-            activity = try await Activity.fetchRandom()
+            activity = try await Activity.fetchActivity(type: selectedType, participants: selectedParticipants)
             phase = .success
         } catch {
             phase = .failure
