@@ -14,6 +14,7 @@
 		4B26212F2B10E3C600321E99 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26212E2B10E3C600321E99 /* Activity.swift */; };
 		4B2621322B10E47000321E99 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2621312B10E47000321E99 /* APIManager.swift */; };
 		4B2621342B10E4CD00321E99 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2621332B10E4CD00321E99 /* Error.swift */; };
+		4B2621372B10FD3D00321E99 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2621362B10FD3D00321E99 /* SafariView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		4B26212E2B10E3C600321E99 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		4B2621312B10E47000321E99 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		4B2621332B10E4CD00321E99 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		4B2621362B10FD3D00321E99 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 		4B26212D2B10E3AA00321E99 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4B2621352B10FD2B00321E99 /* WebSheet */,
 				4B2621202B10E2D100321E99 /* ContentView.swift */,
 			);
 			path = Views;
@@ -98,6 +101,14 @@
 				4B2621332B10E4CD00321E99 /* Error.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		4B2621352B10FD2B00321E99 /* WebSheet */ = {
+			isa = PBXGroup;
+			children = (
+				4B2621362B10FD3D00321E99 /* SafariView.swift */,
+			);
+			path = WebSheet;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +185,7 @@
 				4B2621322B10E47000321E99 /* APIManager.swift in Sources */,
 				4B26212F2B10E3C600321E99 /* Activity.swift in Sources */,
 				4B2621212B10E2D100321E99 /* ContentView.swift in Sources */,
+				4B2621372B10FD3D00321E99 /* SafariView.swift in Sources */,
 				4B26211F2B10E2D100321E99 /* BoredApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
