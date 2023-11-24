@@ -21,7 +21,7 @@ struct Activity: Codable {
             return switch price {
             case 0:
                 "Free"
-            case 0.1...0.3:
+            case 0.01...0.3:
                 "€"
             case 0.4...0.7:
                 "€€"
@@ -84,15 +84,23 @@ class ActivityStore: ObservableObject {
     
     @Published var phase: Phase = .firstLoading
     @Published var error: Error?
-    
-    func fetchActivity() async {
-        do {
-            phase = .loading
-            activity = try await Activity.fetchActivity(type: selectedType, participants: selectedParticipants)
-            phase = .success
-        } catch {
-            phase = .failure
-            self.error = error
+        
+    func fetchActivity() {
+        guard phase != .loading else {
+            return
+        }
+        
+        Task {
+            do {
+                phase = .loading
+                activity = try await Activity.fetchActivity(type: selectedType, participants: selectedParticipants)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.phase = .success
+                }
+            } catch {
+                phase = .failure
+                self.error = error
+            }
         }
     }
 }

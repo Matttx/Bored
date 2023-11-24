@@ -27,8 +27,8 @@ struct ContentView: View {
                 content
             }
         }
-        .task {
-            await store.fetchActivity()
+        .onAppear {
+            store.fetchActivity()
         }
         .sheet(isPresented: $isPresentedSafariView) {
             if let link = store.activity.link,
@@ -41,20 +41,8 @@ struct ContentView: View {
                 .presentationDetents([.fraction(0.5)])
                 .environmentObject(store)
         }
-        .animation(.easeInOut(duration: 2), value: store.activity.label)
+        .animation(.bouncy(extraBounce: 0.2), value: store.phase)
         .padding()
-    }
-    
-    @ViewBuilder
-    private var content: some View {
-        switch store.phase {
-        case .firstLoading:
-            EmptyView()
-        case .failure:
-            failureContent
-        default:
-            successContent
-        }
     }
     
     private var failureContent: some View {
@@ -68,7 +56,7 @@ struct ContentView: View {
         }
     }
     
-    private var successContent: some View {
+    private var content: some View {
         VStack {
             Text("Bored")
                 .font(.title2)
@@ -79,35 +67,26 @@ struct ContentView: View {
                         isPresentedFilters = true
                     } label: {
                         Image(systemName: isFiltered ? "list.bullet.circle.fill" : "list.bullet.circle")
+                            .contentTransition(.symbolEffect(.replace.downUp.byLayer))
                             .font(.system(size: 20))
                     }
                 }
             
             Spacer()
             
-            if store.activity.label == nil && store.phase == .success {
-                Text("No activity found with theses filters")
-                    .font(.title)
-                    .bold()
-                    .multilineTextAlignment(.center)
-            } else if store.phase == .success {
-                RoundedRectangle(cornerRadius: 32)
-                    .frame(width: screenSize.width / 1.2, height: screenSize.height / 2)
-                    .foregroundStyle(.background)
-                    .shadow(color: .gray, radius: 10)
-                    .overlay {
-                        cardContent
-                    }
-            } else {
+            switch store.phase {
+            case .success:
+                successContent
+            case .failure:
+                failureContent
+            default:
                 EmptyView()
             }
             
             Spacer()
             
             Button {
-                Task {
-                    await store.fetchActivity()
-                }
+                store.fetchActivity()
             } label: {
                 Text("Another activity")
                     .font(.headline)
@@ -115,6 +94,29 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity, maxHeight: 40)
             }
             .buttonStyle(.borderedProminent)
+        }
+    }
+    
+    @ViewBuilder
+    private var successContent: some View {
+        if store.activity.label == nil && store.phase == .success {
+            Text("No activity found with theses filters")
+                .font(.title)
+                .bold()
+                .multilineTextAlignment(.center)
+                .transition(.scale(scale: 0.8))
+        } else {
+            RoundedRectangle(cornerRadius: 32)
+                .frame(width: screenSize.width / 1.2, height: screenSize.height / 2)
+                .foregroundStyle(.background)
+                .shadow(color: .gray, radius: 10)
+                .overlay {
+                    cardContent
+                }
+                .transition(
+                    .scale(scale: 0.9)
+                    .combined(with: .opacity.animation(.easeInOut(duration: 0.5)))
+                )
         }
     }
     
@@ -130,11 +132,13 @@ struct ContentView: View {
                 } label: {
                     Text("Know more")
                         .font(.footnote)
+                        .foregroundStyle(.background)
                 }
                 .buttonStyle(.borderedProminent)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        
         .overlay(alignment: .bottom) {
             HStack(spacing: 16) {
                 detailsItem(systemName: "person.2", value: " \(store.activity.participants ?? 0)")

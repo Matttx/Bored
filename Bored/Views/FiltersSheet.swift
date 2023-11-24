@@ -51,7 +51,7 @@ struct FiltersSheet: View {
                 .background(
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundStyle(.background)
-                        .shadow(color: .gray, radius: 5)
+                        .shadow(color: .gray, radius: 1)
                 )
             }
             
@@ -71,7 +71,7 @@ struct FiltersSheet: View {
                 .background(
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundStyle(.background)
-                        .shadow(color: .gray, radius: 5)
+                        .shadow(color: .gray, radius: 1)
                 )
             }
             
@@ -79,9 +79,7 @@ struct FiltersSheet: View {
             
             Button {
                 dismiss()
-                Task {
-                    await store.fetchActivity()
-                }
+                store.fetchActivity()
             } label: {
                 Text("Confirm")
                     .font(.headline)
