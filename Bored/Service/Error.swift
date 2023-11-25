@@ -7,7 +7,12 @@
 
 import Foundation
 
-enum APIError: Error, LocalizedError {
+enum APIError: Error, LocalizedError, Equatable {
+    
+    static func == (lhs: APIError, rhs: APIError) -> Bool {
+        lhs.localizedDescription == rhs.localizedDescription
+    }
+    
     case invalidURL
     
     case badRequest
@@ -17,6 +22,8 @@ enum APIError: Error, LocalizedError {
     case notFound
     
     case invalidData
+    
+    case network
     
     case unknown(Error)
     
@@ -32,6 +39,8 @@ enum APIError: Error, LocalizedError {
             return "The given URL was not found. Please try again later."
         case .invalidData:
             return "The data is invalid. Please try again later."
+        case .network:
+            return "The internet connection appears to be offline."
         case .unknown(let error):
             return error.localizedDescription
         }

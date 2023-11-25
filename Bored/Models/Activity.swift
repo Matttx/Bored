@@ -83,7 +83,7 @@ class ActivityStore: ObservableObject {
     }
     
     @Published var phase: Phase = .firstLoading
-    @Published var error: Error?
+    @Published var error: APIError?
         
     func fetchActivity(type: String? = nil, participants: String? = nil) {
         
@@ -108,7 +108,7 @@ class ActivityStore: ObservableObject {
                 }
             } catch {
                 phase = .failure
-                self.error = error
+                self.error = error as? APIError
             }
         }
     }

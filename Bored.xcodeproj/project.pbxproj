@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B0326D32B12419500039C3D /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0326D22B12419500039C3D /* ReachabilityManager.swift */; };
 		4B26211F2B10E2D100321E99 /* BoredApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26211E2B10E2D100321E99 /* BoredApp.swift */; };
 		4B2621212B10E2D100321E99 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2621202B10E2D100321E99 /* ContentView.swift */; };
 		4B2621232B10E2D200321E99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B2621222B10E2D200321E99 /* Assets.xcassets */; };
@@ -16,11 +17,12 @@
 		4B2621342B10E4CD00321E99 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2621332B10E4CD00321E99 /* Error.swift */; };
 		4B2621372B10FD3D00321E99 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2621362B10FD3D00321E99 /* SafariView.swift */; };
 		4B2621392B11008700321E99 /* FiltersSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2621382B11008700321E99 /* FiltersSheet.swift */; };
-		4B26213B2B116A6600321E99 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26213A2B116A6600321E99 /* SettingsView.swift */; };
+		4B26213B2B116A6600321E99 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26213A2B116A6600321E99 /* AboutView.swift */; };
 		4B26213D2B11705700321E99 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26213C2B11705700321E99 /* SplashScreenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4B0326D22B12419500039C3D /* ReachabilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityManager.swift; sourceTree = "<group>"; };
 		4B26211B2B10E2D100321E99 /* Bored.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bored.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B26211E2B10E2D100321E99 /* BoredApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoredApp.swift; sourceTree = "<group>"; };
 		4B2621202B10E2D100321E99 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -31,7 +33,7 @@
 		4B2621332B10E4CD00321E99 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		4B2621362B10FD3D00321E99 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		4B2621382B11008700321E99 /* FiltersSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersSheet.swift; sourceTree = "<group>"; };
-		4B26213A2B116A6600321E99 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		4B26213A2B116A6600321E99 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4B26213C2B11705700321E99 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,7 +99,7 @@
 				4B2621352B10FD2B00321E99 /* WebSheet */,
 				4B2621202B10E2D100321E99 /* ContentView.swift */,
 				4B2621382B11008700321E99 /* FiltersSheet.swift */,
-				4B26213A2B116A6600321E99 /* SettingsView.swift */,
+				4B26213A2B116A6600321E99 /* AboutView.swift */,
 				4B26213C2B11705700321E99 /* SplashScreenView.swift */,
 			);
 			path = Views;
@@ -108,6 +110,7 @@
 			children = (
 				4B2621312B10E47000321E99 /* APIManager.swift */,
 				4B2621332B10E4CD00321E99 /* Error.swift */,
+				4B0326D22B12419500039C3D /* ReachabilityManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -192,8 +195,9 @@
 			files = (
 				4B26213D2B11705700321E99 /* SplashScreenView.swift in Sources */,
 				4B2621342B10E4CD00321E99 /* Error.swift in Sources */,
-				4B26213B2B116A6600321E99 /* SettingsView.swift in Sources */,
+				4B26213B2B116A6600321E99 /* AboutView.swift in Sources */,
 				4B2621322B10E47000321E99 /* APIManager.swift in Sources */,
+				4B0326D32B12419500039C3D /* ReachabilityManager.swift in Sources */,
 				4B26212F2B10E3C600321E99 /* Activity.swift in Sources */,
 				4B2621212B10E2D100321E99 /* ContentView.swift in Sources */,
 				4B2621372B10FD3D00321E99 /* SafariView.swift in Sources */,

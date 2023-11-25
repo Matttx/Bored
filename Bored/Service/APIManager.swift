@@ -38,6 +38,10 @@ class APIManager: APIManagerProtocol {
     
     func task<T: Codable>(url: String, method: HTTPMethod = .GET, queries: [String: String] = [:]) async throws -> T {
         
+        guard ReachabilityManager.shared.isConnectedToNetwork() else {
+            throw APIError.network
+        }
+        
         guard var components = URLComponents(string: "\(BASE_URL)\(url)") else {
             throw APIError.invalidURL
         }

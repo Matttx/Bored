@@ -57,7 +57,8 @@ struct FiltersSheet: View {
             VStack(spacing: 16) {
                 HStack {
                     Text("Activity type")
-                    Spacer()
+                        .font(.headline)
+                Spacer()
                     Picker("", selection: $selectedType) {
                         ForEach(types, id: \.self) {
                             Text($0)
@@ -77,6 +78,7 @@ struct FiltersSheet: View {
                 
                 HStack {
                     Text("Participants")
+                        .font(.headline)
                     Spacer()
                     Picker("", selection: $selectedParticipants) {
                         ForEach(participants, id: \.self) {

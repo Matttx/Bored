@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct BoredApp: App {
+    
     var body: some Scene {
         WindowGroup {
             SplashScreen()

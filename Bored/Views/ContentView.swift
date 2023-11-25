@@ -43,11 +43,11 @@ struct ContentView: View {
                 .presentationDetents([.fraction(0.4)])
                 .environmentObject(store)
         }
-        .sheet(isPresented: $isPresentedSettings) {
-            SettingsView()
-                .presentationDetents([.fraction(0.9)])
+        .fullScreenCover(isPresented: $isPresentedSettings) {
+            AboutView()
         }
         .animation(.smooth(extraBounce: 0.6), value: store.phase)
+        .disabled(store.error == .network)
     }
     
     private var failureContent: some View {
@@ -146,6 +146,9 @@ struct ContentView: View {
                         .scale(scale: 0.87)
                         .combined(with: .opacity.animation(.easeInOut))
                     )
+                    .onTapGesture {
+                        store.fetchActivity()
+                    }
             } else {
                 EmptyView()
             }
