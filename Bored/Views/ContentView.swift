@@ -102,13 +102,10 @@ struct ContentView: View {
             
             Spacer()
             
-            switch store.phase {
-            case .success:
-                successContent
-            case .failure:
+            if store.phase == .failure {
                 failureContent
-            default:
-                EmptyView()
+            } else {
+                successContent
             }
             
             Spacer()
@@ -137,7 +134,7 @@ struct ContentView: View {
                         .scale(scale: 0.87)
                         .combined(with: .opacity.animation(.easeInOut(duration: 0.5)))
                     )
-            } else {
+            } else if store.phase == .success {
                 RoundedRectangle(cornerRadius: 32)
                     .frame(width: screenSize.width / 1.2, height: screenSize.height / 2)
                     .foregroundStyle(.background)
@@ -147,8 +144,10 @@ struct ContentView: View {
                     }
                     .transition(
                         .scale(scale: 0.87)
-                        .combined(with: .opacity.animation(.easeInOut(duration: 0.5)))
+                        .combined(with: .opacity.animation(.easeInOut))
                     )
+            } else {
+                EmptyView()
             }
         }
         .padding()
