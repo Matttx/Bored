@@ -85,19 +85,25 @@ class ActivityStore: ObservableObject {
     @Published var phase: Phase = .firstLoading
     @Published var error: Error?
         
-    func fetchActivity(type: String = "All", participants: String = "Whatever") {
-        selectedType = type
-        selectedParticipants = participants
+    func fetchActivity(type: String? = nil, participants: String? = nil) {
         
         guard phase != .loading else {
             return
+        }
+        
+        if let type = type {
+            selectedType = type
+        }
+        
+        if let participants = participants {
+            selectedParticipants = participants
         }
         
         Task {
             do {
                 phase = .loading
                 activity = try await Activity.fetchActivity(type: selectedType, participants: selectedParticipants)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
                     self.phase = .success
                 }
             } catch {

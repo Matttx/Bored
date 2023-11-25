@@ -17,6 +17,8 @@ struct ContentView: View {
     
     @State private var isPresentedFilters = false
     
+    @State private var isPresentedSettings = false
+    
     var isFiltered: Bool {
         store.selectedType != "All" || store.selectedParticipants != "Whatever"
     }
@@ -38,11 +40,14 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isPresentedFilters) {
             FiltersSheet()
-                .presentationDetents([.fraction(0.5)])
+                .presentationDetents([.fraction(0.4)])
                 .environmentObject(store)
         }
+        .sheet(isPresented: $isPresentedSettings) {
+            SettingsView()
+                .presentationDetents([.fraction(0.9)])
+        }
         .animation(.smooth(extraBounce: 0.6), value: store.phase)
-        .padding()
     }
     
     private var failureContent: some View {
@@ -61,7 +66,16 @@ struct ContentView: View {
             Text("Bored")
                 .font(.title2)
                 .fontWeight(.semibold)
-                .frame(maxWidth: screenSize.width / 1.2)
+                .frame(maxWidth: screenSize.width - 32)
+                .overlay(alignment: .leading) {
+                    Button {
+                        isPresentedSettings = true
+                    } label: {
+                        Image(systemName: "gearshape.circle")
+                            .symbolEffect(.bounce, value: isPresentedSettings)
+                            .font(.system(size: 20))
+                    }
+                }
                 .overlay(alignment: .trailing) {
                     Button {
                         isPresentedFilters = true
@@ -108,30 +122,36 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity, maxHeight: 40)
             }
             .buttonStyle(.borderedProminent)
+            .padding()
         }
     }
     
-    @ViewBuilder
     private var successContent: some View {
-        if store.activity.label == nil && store.phase == .success {
-            Text("No activity found with theses filters")
-                .font(.title)
-                .bold()
-                .multilineTextAlignment(.center)
-                .transition(.scale(scale: 0.8))
-        } else {
-            RoundedRectangle(cornerRadius: 32)
-                .frame(width: screenSize.width / 1.2, height: screenSize.height / 2)
-                .foregroundStyle(.background)
-                .shadow(color: .gray, radius: 10)
-                .overlay {
-                    cardContent
-                }
-                .transition(
-                    .scale(scale: 0.87)
-                    .combined(with: .opacity.animation(.easeInOut(duration: 0.5)))
-                )
+        VStack {
+            if store.activity.label == nil && store.phase == .success {
+                Text("No activity found with theses filters")
+                    .font(.title)
+                    .bold()
+                    .multilineTextAlignment(.center)
+                    .transition(
+                        .scale(scale: 0.87)
+                        .combined(with: .opacity.animation(.easeInOut(duration: 0.5)))
+                    )
+            } else {
+                RoundedRectangle(cornerRadius: 32)
+                    .frame(width: screenSize.width / 1.2, height: screenSize.height / 2)
+                    .foregroundStyle(.background)
+                    .shadow(color: .gray.opacity(0.3), radius: 10)
+                    .overlay {
+                        cardContent
+                    }
+                    .transition(
+                        .scale(scale: 0.87)
+                        .combined(with: .opacity.animation(.easeInOut(duration: 0.5)))
+                    )
+            }
         }
+        .padding()
     }
     
     private var cardContent: some View {

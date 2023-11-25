@@ -50,6 +50,7 @@ struct FiltersSheet: View {
                         selectedParticipants = "Whatever"
                     } label: {
                         Text("Clear")
+                            .font(.headline)
                     }
                 }
             
