@@ -59,10 +59,20 @@ class APIManager: APIManagerProtocol {
         var request = URLRequest(url: url)
         
         request.httpMethod = method.rawValue
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        try handleAPIError(urlResponse: response)
+        request.timeoutInterval = 5
         
+        var data: Data
+        var response: URLResponse
+        
+        do {
+            (data, response) = try await URLSession.shared.data(for: request)
+        } catch {
+            print("Error: \(error)")
+            throw APIError.unknown(error)
+        }
+        
+        try handleAPIError(urlResponse: response)
+
         var decodedData: T
         
         do {

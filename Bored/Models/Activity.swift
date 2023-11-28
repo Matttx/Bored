@@ -79,10 +79,10 @@ class ActivityStore: ObservableObject {
     @Published var selectedParticipants: String = "Whatever"
     
     enum Phase {
-        case firstLoading, loading, success, failure
+        case loading, success, failure
     }
     
-    @Published var phase: Phase = .firstLoading
+    @Published var phase: Phase?
     @Published var error: APIError?
         
     func fetchActivity(type: String? = nil, participants: String? = nil) {

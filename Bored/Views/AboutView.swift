@@ -13,10 +13,17 @@ struct AboutView: View {
         
     @Environment(\.dismiss) private var dismiss
     
+    @State private var isPresentedContribution = false
+    
     var body: some View {
         NavigationStack {
             content
                 .padding()
+        }
+        .sheet(isPresented: $isPresentedContribution) {
+            if let url = URL(string: "https://www.boredapi.com/contributing") {
+                SafariView(url: url)
+            }
         }
     }
     
@@ -36,24 +43,19 @@ struct AboutView: View {
                 }
             VStack(spacing: 16) {
                 Button {
-                    Text("Test")
+                    isPresentedContribution = true
                 } label: {
                     Text("Contribute to the API")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, maxHeight: 40)
-                }
-                
-                Button {
-                    if let url = URL(string: "https://github.com/drewthoennes") {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    }
-                } label: {
-                    Text("Github: @drewthoennes")
                         .font(.headline)
                         .foregroundStyle(.background)
                         .frame(maxWidth: .infinity, maxHeight: 40)
                 }
                 .buttonStyle(.borderedProminent)
+                
+                Spacer()
+                
+                githubButton(label: "drewthoennes")
+                githubButton(label: "Matttx")    
                 
                 Text("Application made with 🤍 by Matteo Fauchon, using the Bored API by @drewthoennes to give you the different activities")
                     .font(.footnote)
@@ -65,6 +67,28 @@ struct AboutView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
+    }
+    
+    private func githubButton(label: String) -> some View {
+        Button {
+            if let url = URL(string: "https://github.com/\(label)") {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        } label: {
+            HStack {
+                Text("@\(label)")
+                    .frame(maxWidth: .infinity)
+                    .overlay(alignment: .leading) {
+                        Image(.github)
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .padding(.horizontal, 16)
+                    }
+            }
+            .font(.headline)
+            .frame(maxWidth: .infinity, maxHeight: 40)
+        }
+        .buttonStyle(.bordered)
     }
 }
 

@@ -23,6 +23,10 @@ struct ContentView: View {
         store.selectedType != "All" || store.selectedParticipants != "Whatever"
     }
     
+    @State private var progress: Double = 0.0
+    @State private var counter: Double = 0.0
+    @State private var timer: Timer?
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -47,6 +51,27 @@ struct ContentView: View {
             AboutView()
         }
         .animation(.smooth(extraBounce: 0.6), value: store.phase)
+        .onChange(of: store.phase) {
+            if store.phase == .loading {
+                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+                    self.progress += 0.005
+                    self.counter += 0.01
+                    
+                    if self.counter == 5 {
+                        self.timer?.invalidate()
+                    }
+                    
+                    if store.phase == .success {
+                        progress = 1
+                        self.timer?.invalidate()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                            progress = 0
+                            counter = 0
+                        }
+                    }
+                }
+            }
+        }
         .disabled(store.error == .network)
     }
     
@@ -63,42 +88,55 @@ struct ContentView: View {
     
     private var content: some View {
         VStack {
-            Text("Bored")
-                .font(.title2)
-                .fontWeight(.semibold)
-                .frame(maxWidth: screenSize.width - 32)
-                .overlay(alignment: .leading) {
-                    Button {
-                        isPresentedSettings = true
-                    } label: {
-                        Image(systemName: "gearshape.circle")
-                            .symbolEffect(.bounce, value: isPresentedSettings)
-                            .font(.system(size: 20))
+            VStack(spacing: 12) {
+                Text("Bored")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: screenSize.width - 32)
+                    .overlay(alignment: .leading) {
+                        Button {
+                            isPresentedSettings = true
+                        } label: {
+                            Image(systemName: "gearshape.circle")
+                                .symbolEffect(.bounce, value: isPresentedSettings)
+                                .font(.system(size: 20))
+                        }
                     }
-                }
-                .overlay(alignment: .trailing) {
-                    Button {
-                        isPresentedFilters = true
-                    } label: {
-                        Image(systemName: isFiltered ? "list.bullet.circle.fill" : "list.bullet.circle")
-                            .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol))
-                            .keyframeAnimator(
-                                initialValue: FiltersAnimationValues(),
-                                trigger: isFiltered) { content, value in
-                                    content
-                                        .scaleEffect(value.scale)
-                                } keyframes: { value in
-                                    KeyframeTrack(\.scale) {
-                                        LinearKeyframe(1.0, duration: 0.2)
-                                        SpringKeyframe(1.3, duration: 0.3, spring: .bouncy)
-                                        SpringKeyframe(1.0, duration: 0.2, spring: .bouncy)
-                                        SpringKeyframe(1.3, duration: 0.3, spring: .bouncy)
-                                        SpringKeyframe(1.0, duration: 0.2, spring: .bouncy)
+                    .overlay(alignment: .trailing) {
+                        Button {
+                            isPresentedFilters = true
+                        } label: {
+                            Image(systemName: isFiltered ? "list.bullet.circle.fill" : "list.bullet.circle")
+                                .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol))
+                                .keyframeAnimator(
+                                    initialValue: FiltersAnimationValues(),
+                                    trigger: isFiltered) { content, value in
+                                        content
+                                            .scaleEffect(value.scale)
+                                    } keyframes: { value in
+                                        KeyframeTrack(\.scale) {
+                                            LinearKeyframe(1.0, duration: 0.2)
+                                            SpringKeyframe(1.3, duration: 0.3, spring: .bouncy)
+                                            SpringKeyframe(1.0, duration: 0.2, spring: .bouncy)
+                                            SpringKeyframe(1.3, duration: 0.3, spring: .bouncy)
+                                            SpringKeyframe(1.0, duration: 0.2, spring: .bouncy)
+                                        }
                                     }
-                                }
-                            .font(.system(size: 20))
+                                    .font(.system(size: 20))
+                        }
                     }
-                }
+                
+                // UI Loader
+                Rectangle()
+                    .frame(height: 4)
+                    .foregroundStyle(.accent)
+                    .phaseAnimator([true, false]) { content, value in
+                        content
+                            .opacity(value ? 1 : 0.2)
+                    }
+                    .opacity(counter > 1.5 && store.phase == .loading ? 1 : 0)
+                    .animation(.easeInOut, value: counter)
+            }
             
             Spacer()
             
@@ -106,6 +144,10 @@ struct ContentView: View {
                 failureContent
             } else {
                 successContent
+                    .onAppear {
+                        self.progress = 0
+                        self.counter = 0
+                    }
             }
             
             Spacer()
