@@ -18,7 +18,6 @@ struct AboutView: View {
     var body: some View {
         NavigationStack {
             content
-                .padding()
         }
         .sheet(isPresented: $isPresentedContribution) {
             if let url = URL(string: "https://www.boredapi.com/contributing") {
@@ -41,18 +40,29 @@ struct AboutView: View {
                             .font(.system(size: 20))
                     }
                 }
-            VStack(spacing: 16) {
+                .padding(.horizontal)
+            
+            VStack {
                 Button {
                     isPresentedContribution = true
                 } label: {
                     Text("Contribute to the API")
                         .font(.headline)
                         .foregroundStyle(.background)
-                        .frame(maxWidth: .infinity, maxHeight: 40)
+                            .frame(maxWidth: .infinity, maxHeight: 40)
                 }
                 .buttonStyle(.borderedProminent)
                 
-                Spacer()
+                Text("Give one of your ideas to avoid **bored**om!")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(.horizontal)
+            
+            Spacer()
+            
+            VStack(spacing: 16) {
                 
                 githubButton(label: "drewthoennes")
                 githubButton(label: "Matttx")    
@@ -63,8 +73,8 @@ struct AboutView: View {
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
             }
-            
-            Spacer()
+            .padding(.horizontal)
+
         }
         .frame(maxWidth: .infinity)
     }
