@@ -10,6 +10,7 @@ import SwiftUI
 struct FiltersSheet: View {
     
     @EnvironmentObject private var store: ActivityStore
+    @EnvironmentObject private var appStoreManager: AppStoreManager
     
     @Environment(\.dismiss) private var dismiss
     
@@ -118,4 +119,5 @@ struct FiltersSheet: View {
 #Preview {
     FiltersSheet()
         .environmentObject(ActivityStore())
+        .environmentObject(AppStoreManager())
 }

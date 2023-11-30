@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct ContentView: View {
+    
+    private var appStoreManager = AppStoreManager()
     
     @StateObject private var store = ActivityStore()
     
@@ -71,6 +74,9 @@ struct ContentView: View {
                     }
                 }
             }
+        }
+        .onChange(of: appStoreManager.activityCounter) {
+            appStoreManager.handleAppReview()
         }
     }
     

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Activity: Codable {
     var label: String?
@@ -72,6 +73,9 @@ struct Activity: Codable {
 
 @MainActor
 class ActivityStore: ObservableObject {
+    
+    @AppStorage("ActivityCounter") private var activityCounter = 0
+
     @Published var activity: Activity = .init()
     
     @Published var selectedType: String = "All"
@@ -84,7 +88,7 @@ class ActivityStore: ObservableObject {
     
     @Published var phase: Phase?
     @Published var error: APIError?
-        
+            
     func fetchActivity(type: String? = nil, participants: String? = nil) {
         
         guard phase != .loading else {
@@ -105,6 +109,7 @@ class ActivityStore: ObservableObject {
                 activity = try await Activity.fetchActivity(type: selectedType, participants: selectedParticipants)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
                     self.phase = .success
+                    self.activityCounter += 1
                 }
             } catch {
                 phase = .failure

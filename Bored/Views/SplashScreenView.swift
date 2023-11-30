@@ -44,7 +44,7 @@ struct SplashScreen: View {
             
             KeyframeTrack(\.opacity) {
                 LinearKeyframe(1.0, duration: 1.40)
-                LinearKeyframe(0.0, duration: 0.5)
+                LinearKeyframe(0.0, duration: 10)
             }
         }
         .onAppear {

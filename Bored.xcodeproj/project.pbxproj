@@ -19,6 +19,7 @@
 		4B2621392B11008700321E99 /* FiltersSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2621382B11008700321E99 /* FiltersSheet.swift */; };
 		4B26213B2B116A6600321E99 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26213A2B116A6600321E99 /* AboutView.swift */; };
 		4B26213D2B11705700321E99 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26213C2B11705700321E99 /* SplashScreenView.swift */; };
+		4B41DB4B2B1900B30042F274 /* AppStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B41DB4A2B1900B30042F274 /* AppStoreManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		4B2621382B11008700321E99 /* FiltersSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersSheet.swift; sourceTree = "<group>"; };
 		4B26213A2B116A6600321E99 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4B26213C2B11705700321E99 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		4B41DB4A2B1900B30042F274 /* AppStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				4B2621312B10E47000321E99 /* APIManager.swift */,
 				4B2621332B10E4CD00321E99 /* Error.swift */,
 				4B0326D22B12419500039C3D /* ReachabilityManager.swift */,
+				4B41DB4A2B1900B30042F274 /* AppStoreManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 				4B26213D2B11705700321E99 /* SplashScreenView.swift in Sources */,
 				4B2621342B10E4CD00321E99 /* Error.swift in Sources */,
 				4B26213B2B116A6600321E99 /* AboutView.swift in Sources */,
+				4B41DB4B2B1900B30042F274 /* AppStoreManager.swift in Sources */,
 				4B2621322B10E47000321E99 /* APIManager.swift in Sources */,
 				4B0326D32B12419500039C3D /* ReachabilityManager.swift in Sources */,
 				4B26212F2B10E3C600321E99 /* Activity.swift in Sources */,
