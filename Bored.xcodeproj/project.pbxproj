@@ -20,6 +20,7 @@
 		4B26213B2B116A6600321E99 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26213A2B116A6600321E99 /* AboutView.swift */; };
 		4B26213D2B11705700321E99 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26213C2B11705700321E99 /* SplashScreenView.swift */; };
 		4B41DB4B2B1900B30042F274 /* AppStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B41DB4A2B1900B30042F274 /* AppStoreManager.swift */; };
+		4B41DB4E2B1912220042F274 /* FilterTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B41DB4D2B1912220042F274 /* FilterTips.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		4B26213A2B116A6600321E99 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4B26213C2B11705700321E99 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		4B41DB4A2B1900B30042F274 /* AppStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreManager.swift; sourceTree = "<group>"; };
+		4B41DB4D2B1912220042F274 /* FilterTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTips.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 		4B26211D2B10E2D100321E99 /* Bored */ = {
 			isa = PBXGroup;
 			children = (
+				4B41DB4C2B1912170042F274 /* Tips */,
 				4B2621302B10E45F00321E99 /* Service */,
 				4B26212C2B10E3A600321E99 /* Models */,
 				4B26212D2B10E3AA00321E99 /* Views */,
@@ -124,6 +127,14 @@
 				4B2621362B10FD3D00321E99 /* SafariView.swift */,
 			);
 			path = WebSheet;
+			sourceTree = "<group>";
+		};
+		4B41DB4C2B1912170042F274 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				4B41DB4D2B1912220042F274 /* FilterTips.swift */,
+			);
+			path = Tips;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +216,7 @@
 				4B26212F2B10E3C600321E99 /* Activity.swift in Sources */,
 				4B2621212B10E2D100321E99 /* ContentView.swift in Sources */,
 				4B2621372B10FD3D00321E99 /* SafariView.swift in Sources */,
+				4B41DB4E2B1912220042F274 /* FilterTips.swift in Sources */,
 				4B26211F2B10E2D100321E99 /* BoredApp.swift in Sources */,
 				4B2621392B11008700321E99 /* FiltersSheet.swift in Sources */,
 			);

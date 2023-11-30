@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 @main
 struct BoredApp: App {
@@ -13,6 +14,9 @@ struct BoredApp: App {
     var body: some Scene {
         WindowGroup {
             SplashScreen()
+                .task {
+                    try? Tips.configure()
+                }
         }
     }
 }

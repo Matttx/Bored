@@ -101,7 +101,7 @@ class ActivityStore: ObservableObject {
         
         if let participants = participants {
             selectedParticipants = participants
-        }
+        } 
         
         Task {
             do {
@@ -110,6 +110,7 @@ class ActivityStore: ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
                     self.phase = .success
                     self.activityCounter += 1
+                    FilterIconTip.fetchActivityAtleast3TimesEvent.sendDonation()
                 }
             } catch {
                 phase = .failure

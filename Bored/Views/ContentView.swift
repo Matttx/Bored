@@ -7,8 +7,11 @@
 
 import SwiftUI
 import StoreKit
+import TipKit
 
 struct ContentView: View {
+    
+    private let filterIconTip = FilterIconTip()
     
     private var appStoreManager = AppStoreManager()
     
@@ -26,7 +29,6 @@ struct ContentView: View {
         store.selectedType != "All" || store.selectedParticipants != "Whatever"
     }
     
-    @State private var progress: Double = 0.0
     @State private var counter: Double = 0.0
     @State private var timer: Timer?
     
@@ -47,7 +49,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isPresentedFilters) {
             FiltersSheet()
-                .presentationDetents([.fraction(0.4)])
+                .presentationDetents([.fraction(0.45)])
                 .environmentObject(store)
         }
         .fullScreenCover(isPresented: $isPresentedSettings) {
@@ -57,7 +59,6 @@ struct ContentView: View {
         .onChange(of: store.phase) {
             if store.phase == .loading {
                 timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-                    self.progress += 0.005
                     self.counter += 0.01
                     
                     if self.counter == 5 {
@@ -65,10 +66,8 @@ struct ContentView: View {
                     }
                     
                     if store.phase == .success {
-                        progress = 1
                         self.timer?.invalidate()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                            progress = 0
                             counter = 0
                         }
                     }
@@ -109,9 +108,11 @@ struct ContentView: View {
                     }
                     .overlay(alignment: .trailing) {
                         Button {
+                            filterIconTip.invalidate(reason: .actionPerformed)
                             isPresentedFilters = true
-                        } label: {
-                            Image(systemName: isFiltered ? "list.bullet.circle.fill" : "list.bullet.circle")
+                         } label: {
+                            Image(systemName: "list.bullet.circle")
+                                .symbolVariant(isFiltered ? .fill : .none)
                                 .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol))
                                 .keyframeAnimator(
                                     initialValue: FiltersAnimationValues(),
@@ -129,6 +130,7 @@ struct ContentView: View {
                                     }
                                     .font(.system(size: 20))
                         }
+                        .popoverTip(filterIconTip)
                     }
                 
                 // UI Loader
@@ -149,15 +151,14 @@ struct ContentView: View {
                 failureContent
             } else {
                 successContent
-                    .onAppear {
-                        self.progress = 0
-                        self.counter = 0
-                    }
             }
             
             Spacer()
             
             Button {
+                if FilterIconTip.fetchActivityAtleast3TimesEvent.donations.count > 3 {
+                    filterIconTip.invalidate(reason: .actionPerformed)
+                }
                 store.fetchActivity()
             } label: {
                 Text("Another activity")
@@ -194,6 +195,9 @@ struct ContentView: View {
                         .combined(with: .opacity.animation(.easeInOut))
                     )
                     .onTapGesture {
+                        if FilterIconTip.fetchActivityAtleast3TimesEvent.donations.count > 3 {
+                            filterIconTip.invalidate(reason: .actionPerformed)
+                        }
                         store.fetchActivity()
                     }
             } else {
@@ -254,4 +258,11 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .task {
+            try? Tips.resetDatastore()
+            try? Tips.configure([
+                .displayFrequency(.immediate),
+                .datastoreLocation(.applicationDefault)
+            ])
+        }
 }
