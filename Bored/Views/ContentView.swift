@@ -72,7 +72,6 @@ struct ContentView: View {
                 }
             }
         }
-        .disabled(store.error == .network)
     }
     
     private var failureContent: some View {
